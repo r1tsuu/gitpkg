@@ -32,7 +32,7 @@ export default async function uploadPackage(config, pkg, registry) {
 
   fs.writeFileSync(
     path.resolve(pkgTempDir, 'package', 'package.json'),
-    JSON.stringify(newPkgJson),
+    JSON.stringify(newPkgJson, null, 2),
     { encoding: 'utf-8', flag: 'w' }
   );
 
