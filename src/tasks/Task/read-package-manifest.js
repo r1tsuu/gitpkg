@@ -8,7 +8,15 @@ const readFile = bluebird.promisify(fs.readFile);
 export default async function readPackageManifest(pkgPath) {
   const packagePath = path.resolve(pkgPath, 'package.json');
   const pkg = JSON.parse(await readFile(packagePath, 'utf-8'));
+
   pkg.scripts = pkg.scripts || {};
+
+  if (pkg.publishConfig) {
+    Object.keys(pkg.publishConfig).forEach(([key, value]) => {
+      pkg[key] = value;
+    });
+  }
+
   validatePackageJSON(pkg);
   return pkg;
 }
