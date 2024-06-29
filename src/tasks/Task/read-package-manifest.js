@@ -11,12 +11,6 @@ export default async function readPackageManifest(pkgPath) {
 
   pkg.scripts = pkg.scripts || {};
 
-  if (pkg.publishConfig) {
-    Object.keys(pkg.publishConfig).forEach(([key, value]) => {
-      pkg[key] = value;
-    });
-  }
-
   validatePackageJSON(pkg);
   return pkg;
 }

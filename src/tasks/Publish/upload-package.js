@@ -1,4 +1,5 @@
 import path from 'path';
+import fs from 'fs';
 import execLikeShell from './exec-like-shell';
 import getTempDir from './get-temp-dir';
 import getGitTagName from './get-git-tag-name';
@@ -17,6 +18,24 @@ export default async function uploadPackage(config, pkg, registry) {
   const pkgTempDir = await getTempDir(pkg);
   const pkgTempDirPkg = path.join(pkgTempDir, 'package');
   const gitpkgPackageName = getGitTagName(pkg, config);
+
+  const pkgJson = JSON.parse(
+    fs.readFileSync(path.resolve(pkgTempDir, 'package', 'package.json'), {
+      encoding: 'utf-8'
+    })
+  );
+
+  const newPkgJson = {
+    ...pkgJson,
+    ...(pkgJson.publishConfig ?? {})
+  };
+
+  fs.writeFileSync(
+    path.resolve(pkgTempDir, 'package', 'package.json'),
+    JSON.stringify(newPkgJson),
+    { encoding: 'utf-8', flag: 'w' }
+  );
+
   await execLikeShell('git init', pkgTempDirPkg);
   await execLikeShell('git add .', pkgTempDirPkg);
   await execLikeShell('git commit --no-verify -m gitpkg', pkgTempDirPkg);
@@ -24,11 +43,11 @@ export default async function uploadPackage(config, pkg, registry) {
   await execLikeShell(`git tag ${gitpkgPackageName}`, pkgTempDirPkg);
 
   // This command looks up the existing tags on the remote.
-  //
+
   // If you push a tag that already exists, it should succeed with
   // "Everything up-to-date".  However, your local copy must know the remote
   // has the matching tag.  Otherwise, you'll receive `gitErrorExists`.
-  //
+
   // By fetching and then pushing, we ensure that:
   // -  If the tag hasn't been pushed yet, it is uploaded and the command
   //    succeeds.

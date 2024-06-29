@@ -1,6 +1,6 @@
 {
   "name": "@r1tsu/gitpkg",
-  "version": "1.0.0-beta.6",
+  "version": "1.0.0-beta.7",
   "description": "Publish packages as git tags",
   "main": "build/index.js",
   "scripts": {
@@ -30,7 +30,10 @@
     "bin",
     "build"
   ],
-  "repository": "git@github.com:ramasilveyra/gitpkg.git",
+  "publishConfig": {
+    "test": "asd"
+  },
+  "repository": "git@github.com:r1tsuu/gitpkg.git",
   "keywords": [
     "git",
     "packages",
@@ -69,9 +72,6 @@
     "jest": "^28.1.0",
     "lint-staged": "^13.0.0",
     "prettier": "^2.0.2"
-  },
-  "gitpkg": {
-    "registry": "git@github.com:ramasilveyra/public-registry.git"
   },
   "jest": {
     "collectCoverageFrom": [
