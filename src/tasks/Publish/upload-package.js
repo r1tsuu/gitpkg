@@ -12,8 +12,8 @@ export default async function uploadPackage(config, pkg, registry) {
   // This makes publishing idempotent: you can run `gitpkg publish` as many
   // times as you like, and it won't error unless the underlying files don't
   // match.
-  process.env.GIT_AUTHOR_DATE = `1970-01-01T00:00:00.000Z`;
-  process.env.GIT_COMMITTER_DATE = `1970-01-01T00:00:00.000Z`;
+  process.env.GIT_AUTHOR_DATE = new Date().toISOString();
+  process.env.GIT_COMMITTER_DATE = new Date().toISOString();
 
   const pkgTempDir = await getTempDir(pkg);
   const pkgTempDirPkg = path.join(pkgTempDir, 'package');
