@@ -10,5 +10,5 @@ export default function getGitTagName(pkg, config) {
  * @param {object} pkg The package.json object.
  */
 export function defaultTagNameFormat(pkg) {
-  return `${normalisePackageNameNpm(pkg.name)}-v${pkg.version}-gitpkg`;
+  return `${normalisePackageNameNpm(pkg.name)}-v${pkg.version}-${Date.now()}`;
 }
